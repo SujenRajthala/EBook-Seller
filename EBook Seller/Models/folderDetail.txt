@@ -1,0 +1,5 @@
+﻿InClude below:
+
+Entities/ (Database schema)
+
+DTOs/ (Data Transfer Objects for API input/output)

@@ -1,0 +1,9 @@
+﻿Include Below:
+
+AppDbContext.cs
+
+Interfaces/IRepository.cs
+
+Repositories/Repository.cs
+
+Configuration(OnModelCreating)
