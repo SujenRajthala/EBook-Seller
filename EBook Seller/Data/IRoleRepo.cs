@@ -6,5 +6,7 @@ namespace EBook_Seller.Data
     {
         public Task AddRoleAsync(Role newRole);
         public Task DeleteRole(int id);
+
+        public Task AssignRoleAsync(UserRole userRoles);
     }
 }

@@ -15,7 +15,7 @@ namespace EBook_Seller.Data
 
             modelBuilder.Entity<User>().Property(u => u.UserName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<User>().Property(u => u.Email).IsRequired().HasMaxLength(75);
-            modelBuilder.Entity<User>().Property(u => u.Password).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<User>().Property(u => u.Password).IsRequired().HasMaxLength(300);
 
             modelBuilder.Entity<Role>().Property(r => r.RoleName).IsRequired();
 

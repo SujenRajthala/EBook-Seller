@@ -19,5 +19,10 @@ namespace EBook_Seller.Data
         {
             throw new NotImplementedException();
         }
+        public async Task AssignRoleAsync(UserRole userRoles)
+        {
+            await _context.UserRoles.AddAsync(userRoles);
+            await _context.SaveChangesAsync();
+        }
     }
 }
