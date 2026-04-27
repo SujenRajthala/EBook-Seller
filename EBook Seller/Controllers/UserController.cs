@@ -1,5 +1,6 @@
 ﻿using EBook_Seller.Models.DTOs;
 using EBook_Seller.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace EBook_Seller.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
@@ -30,6 +32,13 @@ namespace EBook_Seller.Controllers
                 return Unauthorized(ex.Message);
             }
 
-        } 
+        }
+
+        [HttpGet("GetUsers")]
+        public async Task<IActionResult> GetUser()
+        {
+            var users = await _service.GetUsers();
+            return Ok(users);
+        }
     }
 }

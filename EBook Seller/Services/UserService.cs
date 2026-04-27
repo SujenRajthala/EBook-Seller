@@ -38,9 +38,10 @@ namespace EBook_Seller.Services
             await _roleRepo.AssignRoleAsync(userRole);
         }
         
-        public Task<List<User>> GetUser()
+        public async Task<List<GetUsersDTO>> GetUsers()
         {
-            throw new NotImplementedException();
+            var users = await _userRepo.GetUsers();
+            return users;
         }
         public Task DeleteUser()
         {

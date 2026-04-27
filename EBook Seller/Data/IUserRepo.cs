@@ -7,7 +7,8 @@ namespace EBook_Seller.Data
     {
         public Task RegisterUser(User user);
         public Task Login(LoginDTO dto);
-        public Task<List<User>> GetUser();
+        public Task<List<GetUsersDTO>> GetUsers();
+        public Task<List<Role>> GetUserRoles(int id);
         public Task DeleteUserById(int id);
         public Task DeleteUser();
 

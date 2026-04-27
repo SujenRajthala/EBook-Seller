@@ -24,9 +24,19 @@ namespace EBook_Seller.Data
             throw new NotImplementedException();
         }
 
-        public Task<List<User>> GetUser()
+        public async Task<List<GetUsersDTO>> GetUsers()
         {
-            throw new NotImplementedException();
+            var users =await _context.Users.Select(u => new GetUsersDTO
+            {
+                UserName = u.UserName,
+                UserRoles = u.UserRoles.Select(ur=>ur.Role.RoleName).ToList()
+            }).ToListAsync();
+            return users;
+        }
+        public async Task<List<Role>> GetUserRoles(int id)
+        {
+            var roles = await _context.UserRoles.Where(ur => ur.UserId == id).Select(ur=>ur.Role).ToListAsync();
+            return roles;
         }
         public Task DeleteUser()
         {
