@@ -1,5 +1,7 @@
 ﻿using EBook_Seller.Data;
 using EBook_Seller.Models;
+using EBook_Seller.Models.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace EBook_Seller.Services
 {
@@ -18,6 +20,11 @@ namespace EBook_Seller.Services
             };
             await _repo.AddRoleAsync(newRole);
             return newRole;
+        }
+
+        public async Task AssignRoleAsync(AssignRoleDTO userRole)
+        {
+            await _repo.AssignRoleAsync(new UserRole { UserId=userRole.UserId,RoleId=userRole.RoleId });
         }
 
         public async Task DeleteRole(int id)

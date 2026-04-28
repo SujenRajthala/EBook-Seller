@@ -5,5 +5,6 @@ namespace EBook_Seller.Data
     public interface IJwtAuthenticationRepo
     {
         public Task<User> Get(string email);
+        
     }
 }

@@ -1,4 +1,5 @@
-﻿using EBook_Seller.Data;
+﻿using Azure.Core;
+using EBook_Seller.Data;
 using EBook_Seller.Handler;
 using EBook_Seller.Models;
 using EBook_Seller.Models.DTOs;
@@ -32,10 +33,19 @@ namespace EBook_Seller.Services
         {
             if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password)) return null;
             var user = await _jwtRepo.Get(dto.Email);
+            var respond = await GenerateToken(user);
+            var oldRefreshTokenString = await _refreshRepo.HasLoggedIn(user);
 
             if (user is null || !PasswordHashHandler.VerifyUserPassword(user, dto.Password)) return null;
 
-            var respond = await GenerateToken(user);
+            if(oldRefreshTokenString != null) {
+                var oldRefreshToken = await _refreshRepo.VerifyRefreshToken(new RequestRefreshDTO { RefreshToken= oldRefreshTokenString });
+                oldRefreshToken.Token = respond.RefreshToken;
+                oldRefreshToken.ExpiresOnUtc = DateTime.UtcNow.AddDays(7);
+                await _refreshRepo.SaveChangesAsync();
+                return respond;
+            }
+            
             var refreshToken = new RefreshToken
             {
                 Id = Guid.NewGuid(),
@@ -45,6 +55,22 @@ namespace EBook_Seller.Services
             };
 
             await _refreshRepo.AddRefreshToken(refreshToken);
+
+            return respond;
+        }
+
+        public async Task<LoginRespondDTO> GetRefreshedToken(RequestRefreshDTO request)
+        {
+            var refreshToken = await _refreshRepo.VerifyRefreshToken(request);
+
+            if (refreshToken == null || refreshToken.ExpiresOnUtc < DateTime.UtcNow)
+            {
+                throw new ApplicationException("The refresh token is Expired");
+            }
+
+            var respond = await GenerateToken(refreshToken.User);
+            refreshToken.Token =respond.RefreshToken;
+            await _refreshRepo.SaveChangesAsync();
 
             return respond;
         }
