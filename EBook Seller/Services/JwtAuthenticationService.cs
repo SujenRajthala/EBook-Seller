@@ -29,6 +29,10 @@ namespace EBook_Seller.Services
             _refreshRepo = refreshRepo;
         }
 
+        public async Task<string> Login1(LoginDTO dto)
+        {
+            return "Hello";
+        }
         public async Task<LoginRespondDTO> Login(LoginDTO dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password)) return null;

@@ -23,6 +23,12 @@ namespace EBook_Seller.Controllers
             var tokenResponse = await _service.Login(credentials);
             return Ok(tokenResponse);
         }
+        [HttpGet("Login1")]
+        public async Task<IActionResult> Login1(LoginDTO credentials)
+        {
+            var tokenResponse = await _service.Login1(credentials);
+            return Ok(tokenResponse);
+        }
 
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshToken(RequestRefreshDTO request)

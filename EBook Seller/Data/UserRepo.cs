@@ -26,10 +26,10 @@ namespace EBook_Seller.Data
 
         public async Task<List<GetUsersDTO>> GetUsers()
         {
-            var users =await _context.Users.Select(u => new GetUsersDTO
+            var users = await _context.Users.AsNoTracking().Select(u => new GetUsersDTO
             {
                 UserName = u.UserName,
-                UserRoles = u.UserRoles.Select(ur=>ur.Role.RoleName).ToList()
+                UserRoles = u.UserRoles.Select(ur => ur.Role.RoleName).ToList()
             }).ToListAsync();
             return users;
         }
