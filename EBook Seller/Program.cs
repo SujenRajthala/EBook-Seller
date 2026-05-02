@@ -19,6 +19,8 @@ builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IJwtAuthenticationRepo, JwtAuthenticationRepo>();
 builder.Services.AddScoped<IJwtAuthenticationService, JwtAuthenticationService>();
 builder.Services.AddScoped<IRefreshTokenRepo, RefreshTokenRepo>();
+builder.Services.AddScoped<IBookRepo, BookRepo>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 builder.Services.AddAuthentication(options =>
 {
