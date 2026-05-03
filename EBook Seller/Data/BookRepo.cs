@@ -30,5 +30,13 @@ namespace EBook_Seller.Data
             var exist = await _context.Books.AnyAsync(b=>b.Name== newBook.Name && b.ISBN== newBook.ISBN);
             return exist;
         }
+
+        public async Task<List<Book>> MatchingBooks(List<string> booksName,List<string> booksISBN)
+        {
+            var existingBook = await _context.Books
+                .Where(b => b.ISBN != null && booksISBN.Contains(b.ISBN) || b.Name!=null && booksName.Contains(b.Name))
+                .ToListAsync();
+            return existingBook;
+        }
     }
 }

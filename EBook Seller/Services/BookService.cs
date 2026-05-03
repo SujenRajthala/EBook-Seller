@@ -32,15 +32,11 @@ namespace EBook_Seller.Services
 
         public async Task AddRangeAsyncBook(List<AddBookDTO> bookListData)
         {
-            //var newBookList = bookListData.Select(bl => new Book
-            //{
-            //    if(await _bookRepo.DoesExist(bl))
-            //    Name = bl.Name,
-            //    Details = bl.Details,
-            //    ISBN = bl.ISBN,
-            //}).ToList();
+            var inputNames = bookListData.Select(bl => bl.Name).ToList();
+            var inputIsbns = bookListData.Select(bl => bl.ISBN).ToList();
 
-
+            var duplicates = await _bookRepo.MatchingBooks(inputNames, inputIsbns);
+            //var newBooks = bookListData.Where(bl => duplicates.Contains(bl.Name));
         }
     }
 }

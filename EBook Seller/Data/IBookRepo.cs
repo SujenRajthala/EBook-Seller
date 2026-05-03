@@ -7,5 +7,6 @@ namespace EBook_Seller.Data
         public Task AddAsyncBook(Book bookData);
         public Task AddRangeAsyncBook(List<Book> bookListData);
         public Task<bool> DoesExist(Book newBook);
+        public Task<List<Book>> MatchingBooks(List<string> booksName, List<string> booksISBN);
     }
 }
