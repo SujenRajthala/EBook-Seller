@@ -33,5 +33,18 @@ namespace EBook_Seller.Controllers
             }
             
         }
+
+        [HttpPost("AddBooks")]
+        public async Task<IActionResult> AddBooks(AddListBookDTO booksData)
+        {
+            try
+            {
+                await _service.AddRangeAsyncBook(booksData.Books);
+                return Ok("Your List of books are saved to the System.");
+            }catch(InvalidOperationException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+        }
     }
 }

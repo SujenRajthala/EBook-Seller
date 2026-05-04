@@ -32,11 +32,37 @@ namespace EBook_Seller.Services
 
         public async Task AddRangeAsyncBook(List<AddBookDTO> bookListData)
         {
-            var inputNames = bookListData.Select(bl => bl.Name).ToList();
-            var inputIsbns = bookListData.Select(bl => bl.ISBN).ToList();
+            var duplicateNamesInList = bookListData.GroupBy(bl => bl.Name).Where(g => g.Count()>1).Select(g=>g.Key).ToList();
+            var duplicateIsbnsInList = bookListData.GroupBy(bl => bl.ISBN).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+
+            if (duplicateIsbnsInList.Any() || duplicateNamesInList.Any())
+            {
+                var exceptionText="Your List contains internal duplicates: ";
+                if (duplicateNamesInList.Any()) exceptionText += string.Join(" ,", duplicateNamesInList);
+                if (duplicateIsbnsInList.Any()) exceptionText += string.Join(" ,", duplicateIsbnsInList);
+                throw new InvalidOperationException(exceptionText);
+            }
+
+            var inputNames = bookListData.Select(bl => bl.Name).ToList(); //[a,b,c,d,e]
+            var inputIsbns = bookListData.Select(bl => bl.ISBN).ToList(); //[1,2,3,4,1]
 
             var duplicates = await _bookRepo.MatchingBooks(inputNames, inputIsbns);
-            //var newBooks = bookListData.Where(bl => duplicates.Contains(bl.Name));
+
+            if (duplicates.Any())
+            {
+                var dupString = string.Join(" ,", duplicates.Select(d => d.Name).ToList());
+                throw new InvalidOperationException($"[{dupString}] already does exists in the system.");
+            }
+
+            var newBooks = bookListData
+                .Select(bl=>new Book
+                {
+                    Name=bl.Name,
+                    Details=bl.Details,
+                    ISBN=bl.ISBN
+                }).ToList();
+
+            await _bookRepo.AddRangeAsyncBook(newBooks);
         }
     }
 }
