@@ -64,5 +64,10 @@ namespace EBook_Seller.Services
 
             await _bookRepo.AddRangeAsyncBook(newBooks);
         }
+
+        public async Task EditBook(int id,AddBookDTO bookEdit)
+        {
+            await _bookRepo.EditBook(id, bookEdit);
+        }
     }
 }

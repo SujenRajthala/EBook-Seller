@@ -1,4 +1,5 @@
 ﻿using EBook_Seller.Models;
+using EBook_Seller.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace EBook_Seller.Data
@@ -40,6 +41,25 @@ namespace EBook_Seller.Data
                 .Where(b => b.ISBN != null && booksISBN.Contains(b.ISBN) || b.Name!=null && booksName.Contains(b.Name))
                 .ToListAsync();
             return existingBook;
+        }
+
+        public async Task EditBook(int id, AddBookDTO bookEdit)
+        {
+            var book = await _context.Books.FindAsync(id);
+
+            if (book == null) throw new InvalidOperationException("There is no data available for this ID");
+            book.Name = bookEdit.Name;
+            book.Details = bookEdit.Details;
+            book.ISBN = bookEdit.ISBN;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Book> GetBook(string bookName)
+        {
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.Name == bookName);
+            if (book == null) throw new InvalidOperationException("There is no data available for this ID");
+            return book;
         }
     }
 }

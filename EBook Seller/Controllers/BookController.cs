@@ -46,5 +46,19 @@ namespace EBook_Seller.Controllers
                 return Unauthorized(ex.Message);
             }
         }
+
+        [HttpPut("EditBook/{id}")]
+        public async Task<IActionResult> EditBook(int id,AddBookDTO editedBookData)
+        {
+            try
+            {
+                await _service.EditBook(id, editedBookData);
+                return Ok("Your data has been successfully edited");
+            }catch(InvalidOperationException ex)
+            {
+                return Unauthorized(ex);
+            }
+           
+        }
     }
 }

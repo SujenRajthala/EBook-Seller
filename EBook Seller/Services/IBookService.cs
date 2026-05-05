@@ -7,5 +7,6 @@ namespace EBook_Seller.Services
     {
         public Task AddAsyncBook(AddBookDTO bookData);
         public Task AddRangeAsyncBook(List<AddBookDTO> bookListData);
+        public Task EditBook(int id,AddBookDTO bookEdit);
     }
 }
