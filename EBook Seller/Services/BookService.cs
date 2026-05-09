@@ -8,12 +8,14 @@ namespace EBook_Seller.Services
     {
 
         private readonly IBookRepo _bookRepo;
+        private readonly IGenreRepo _genreRepo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public BookService(IBookRepo bookRrepo,IUnitOfWork uniteOfWork)
+        public BookService(IBookRepo bookRrepo,IUnitOfWork uniteOfWork, IGenreRepo genreRepo)
         {
             _bookRepo = bookRrepo;
             _unitOfWork = uniteOfWork;
+            _genreRepo = genreRepo;
         }
 
         public async Task<List<BookResponseDTO>> GetBooks()
@@ -48,18 +50,42 @@ namespace EBook_Seller.Services
 
         public async Task AddAsyncBook(AddBookDTO bookData)
         {
+
+            //Throws Exception if no List is empty
+            if (!bookData.GenreIds.Any())
+                throw new InvalidOperationException("Book should be of atleast one genre!!");
+
+            var invalidGenreId = await _genreRepo.ValidateGenreExist(bookData.GenreIds);
+
+            //Throws exception if send Id doesn't match with Id's that are stored in DB
+            if (invalidGenreId != null)
+            {
+                if(invalidGenreId.Count()>1) 
+                    throw new KeyNotFoundException($"There are no Ids: {string.Join(", ", invalidGenreId)}");
+
+                throw new KeyNotFoundException($"There are no Ids: {invalidGenreId[0]}");
+
+            }
+
             var newBook = new Book
             {
                 Name = bookData.Name,
                 Details = bookData.Details,
                 ISBN = bookData.ISBN,
+                BooksGenres = bookData.GenreIds
+                .Select(g => new BookGenre
+                {
+                    CategoryId = g
+                }).ToList()
             };
 
+            //Throws exception if Name or ISBN already exist in DB
             if (await _bookRepo.DoesExist(newBook))
-            {
                 throw new InvalidOperationException($"Book with ISBN {newBook.ISBN} or {newBook.Name} is already in the system.");
-            }
+
             await _bookRepo.AddAsyncBook(newBook);
+
+            await _unitOfWork.SaveChangesAsync();
 
         }
 

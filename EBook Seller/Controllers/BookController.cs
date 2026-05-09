@@ -57,6 +57,9 @@ namespace EBook_Seller.Controllers
             catch (InvalidOperationException ex)
             {
                 return Unauthorized(ex.Message);
+            }catch(KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             
         }

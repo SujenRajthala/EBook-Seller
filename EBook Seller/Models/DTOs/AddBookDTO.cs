@@ -12,5 +12,7 @@ namespace EBook_Seller.Models.DTOs
 
         [Required]
         public string ISBN { get; set; }
+
+        public List<int> GenreIds { get; set; }
     }
 }

@@ -37,7 +37,6 @@ namespace EBook_Seller.Data.Repo
         public async Task AddAsyncBook(Book newBook)
         {
             await _context.Books.AddAsync(newBook);
-            await _context.SaveChangesAsync();
         }
 
         public async Task AddRangeAsyncBook(List<Book> bookListData)

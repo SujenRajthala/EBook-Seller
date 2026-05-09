@@ -46,5 +46,14 @@ namespace EBook_Seller.Data.Repo
 
             return doesExists;
         }
+        public async Task<List<int>> ValidateGenreExist(List<int> genres)
+        {
+            var existingGenre = await _context.Genres.Where(g => genres.Contains(g.Id)).Select(g=>g.Id).ToListAsync();
+            var noGenre = genres.Where(g => !existingGenre.Contains(g)).ToList();
+
+            if (!noGenre.Any()) return null;
+
+            return noGenre;
+        }
     }
 }
