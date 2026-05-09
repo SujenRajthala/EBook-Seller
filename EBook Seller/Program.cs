@@ -1,4 +1,6 @@
 using EBook_Seller.Data;
+using EBook_Seller.Data.IRepo;
+using EBook_Seller.Data.Repo;
 using EBook_Seller.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,9 @@ builder.Services.AddScoped<IJwtAuthenticationService, JwtAuthenticationService>(
 builder.Services.AddScoped<IRefreshTokenRepo, RefreshTokenRepo>();
 builder.Services.AddScoped<IBookRepo, BookRepo>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IGenreRepo, GenreRepo>();
+builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAuthentication(options =>
 {

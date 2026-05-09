@@ -1,4 +1,4 @@
-﻿using EBook_Seller.Data;
+﻿using EBook_Seller.Data.IRepo;
 using EBook_Seller.Models;
 using EBook_Seller.Models.DTOs;
 using Microsoft.AspNetCore.Identity;

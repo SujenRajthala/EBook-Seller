@@ -1,5 +1,5 @@
 ﻿using Azure.Core;
-using EBook_Seller.Data;
+using EBook_Seller.Data.IRepo;
 using EBook_Seller.Handler;
 using EBook_Seller.Models;
 using EBook_Seller.Models.DTOs;
@@ -37,6 +37,7 @@ namespace EBook_Seller.Services
         {
             if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password)) return null;
             var user = await _jwtRepo.Get(dto.Email);
+            if (user == null) return null;
             var respond = await GenerateToken(user);
             var oldRefreshTokenString = await _refreshRepo.HasLoggedIn(user);
 

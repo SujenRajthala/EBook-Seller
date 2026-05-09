@@ -2,15 +2,13 @@
 
 namespace EBook_Seller.Models.DTOs
 {
-    public class AddBookDTO
+    public class AddGenreDTO
     {
         [Required]
+        [MaxLength(30)]
         public string Name { get; set; }
 
         [Required]
         public string Details { get; set; }
-
-        [Required]
-        public string ISBN { get; set; }
     }
 }

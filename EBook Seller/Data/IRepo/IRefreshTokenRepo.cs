@@ -1,7 +1,7 @@
 ﻿using EBook_Seller.Models;
 using EBook_Seller.Models.DTOs;
 
-namespace EBook_Seller.Data
+namespace EBook_Seller.Data.IRepo
 {
     public interface IRefreshTokenRepo
     {

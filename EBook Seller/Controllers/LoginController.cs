@@ -21,6 +21,7 @@ namespace EBook_Seller.Controllers
         public async Task<IActionResult> Login(LoginDTO credentials)
         {
             var tokenResponse = await _service.Login(credentials);
+            if (tokenResponse == null) return Unauthorized("Invalid Credentials!!");
             return Ok(tokenResponse);
         }
 

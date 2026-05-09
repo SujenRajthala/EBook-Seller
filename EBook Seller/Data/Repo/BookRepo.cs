@@ -1,8 +1,9 @@
-﻿using EBook_Seller.Models;
+﻿using EBook_Seller.Data.IRepo;
+using EBook_Seller.Models;
 using EBook_Seller.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-namespace EBook_Seller.Data
+namespace EBook_Seller.Data.Repo
 {
     public class BookRepo : IBookRepo
     {
@@ -12,6 +13,25 @@ namespace EBook_Seller.Data
         public BookRepo(BookDbContext context)
         {
             _context = context;
+        }
+
+        public async Task<List<Book>> GetBooks()
+        {
+            var books =await _context.Books.ToListAsync();
+            return books;
+        } 
+
+        public async Task<Book> GetBookByName(string bookName)
+        {
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.Name == bookName);
+            if (book == null) return null;
+            return book;
+        }
+        public async Task<Book> GetBookById(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+            if (book == null) throw new KeyNotFoundException("There is no data available for this ID");
+            return book;
         }
 
         public async Task AddAsyncBook(Book newBook)
@@ -43,23 +63,11 @@ namespace EBook_Seller.Data
             return existingBook;
         }
 
-        public async Task EditBook(int id, AddBookDTO bookEdit)
+        public async Task<Book> IsEditable(int id, AddBookDTO editedData)
         {
-            var book = await _context.Books.FindAsync(id);
-
-            if (book == null) throw new InvalidOperationException("There is no data available for this ID");
-            book.Name = bookEdit.Name;
-            book.Details = bookEdit.Details;
-            book.ISBN = bookEdit.ISBN;
-
-            await _context.SaveChangesAsync();
+            var exists=await _context.Books.FirstOrDefaultAsync(b => (b.ISBN == editedData.ISBN || b.Name == editedData.Name) && b.Id!= id);
+            return exists; 
         }
 
-        public async Task<Book> GetBook(string bookName)
-        {
-            var book = await _context.Books.FirstOrDefaultAsync(b => b.Name == bookName);
-            if (book == null) throw new InvalidOperationException("There is no data available for this ID");
-            return book;
-        }
     }
 }

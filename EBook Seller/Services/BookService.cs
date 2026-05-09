@@ -1,4 +1,4 @@
-﻿using EBook_Seller.Data;
+﻿using EBook_Seller.Data.IRepo;
 using EBook_Seller.Models;
 using EBook_Seller.Models.DTOs;
 
@@ -8,11 +8,44 @@ namespace EBook_Seller.Services
     {
 
         private readonly IBookRepo _bookRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BookService(IBookRepo bookRrepo)
+        public BookService(IBookRepo bookRrepo,IUnitOfWork uniteOfWork)
         {
             _bookRepo = bookRrepo;
+            _unitOfWork = uniteOfWork;
         }
+
+        public async Task<List<BookResponseDTO>> GetBooks()
+        {
+            var books = await _bookRepo.GetBooks();
+            var booksResponse = books.Select(b => new BookResponseDTO { Name = b.Name, Detail = b.Details, ISBN = b.ISBN }).ToList();
+            return booksResponse;
+        }
+
+        public async Task<BookResponseDTO> GetBookByName(string bookName)
+        {
+            var book=await _bookRepo.GetBookByName(bookName);
+            if (book == null) return null;
+            return new BookResponseDTO
+            {
+                ISBN = book.ISBN,
+                Name = book.Name,
+                Detail = book.Details
+            };
+        }
+
+        public async Task<BookResponseDTO> GetBookById(int id)
+        {
+            var book = await _bookRepo.GetBookById(id);
+            return new BookResponseDTO
+            {
+                ISBN = book.ISBN,
+                Name = book.Name,
+                Detail = book.Details
+            };
+        }
+
         public async Task AddAsyncBook(AddBookDTO bookData)
         {
             var newBook = new Book
@@ -65,9 +98,27 @@ namespace EBook_Seller.Services
             await _bookRepo.AddRangeAsyncBook(newBooks);
         }
 
-        public async Task EditBook(int id,AddBookDTO bookEdit)
+        public async Task EditBook(int id,AddBookDTO editedData)
         {
-            await _bookRepo.EditBook(id, bookEdit);
+            var existDuplicate = await _bookRepo.IsEditable(id, editedData);
+            if (existDuplicate != null)
+            {
+                if (existDuplicate.ISBN == editedData.ISBN &&existDuplicate.Name==editedData.Name) 
+                    throw new InvalidOperationException($"There is already a record with Name: {editedData.Name} and ISBM: {editedData.ISBN}");
+
+                if (existDuplicate.ISBN == editedData.ISBN) 
+                    throw new InvalidOperationException($"There is already a record with ISBM: {editedData.ISBN}");
+
+                throw new InvalidOperationException($"There is already a record with Name: {editedData.Name}");
+
+            }
+            var oldBookData =await _bookRepo.GetBookById(id);
+            oldBookData.Name = editedData.Name;
+            oldBookData.Details = editedData.Details;
+            oldBookData.ISBN = editedData.ISBN;
+
+            await _unitOfWork.SaveChangesAsync();
         }
+
     }
 }

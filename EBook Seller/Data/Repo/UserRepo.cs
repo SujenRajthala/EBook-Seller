@@ -1,8 +1,9 @@
-﻿using EBook_Seller.Models;
+﻿using EBook_Seller.Data.IRepo;
+using EBook_Seller.Models;
 using EBook_Seller.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-namespace EBook_Seller.Data
+namespace EBook_Seller.Data.Repo
 {
     public class UserRepo : IUserRepo
     {

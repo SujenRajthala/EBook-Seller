@@ -1,6 +1,6 @@
 ﻿using EBook_Seller.Models;
 
-namespace EBook_Seller.Data
+namespace EBook_Seller.Data.IRepo
 {
     public interface IRoleRepo
     {
