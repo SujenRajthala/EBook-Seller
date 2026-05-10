@@ -80,7 +80,7 @@ namespace EBook_Seller.Services
             };
 
             //Throws exception if Name or ISBN already exist in DB
-            if (await _bookRepo.DoesExist(newBook))
+            if (await _bookRepo.DuplicateDoesExist(newBook))
                 throw new InvalidOperationException($"Book with ISBN {newBook.ISBN} or {newBook.Name} is already in the system.");
 
             await _bookRepo.AddAsyncBook(newBook);
@@ -146,5 +146,9 @@ namespace EBook_Seller.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
+        public async Task<List<BookByGenreDTO>> GetBookByGenre(int GenreId)
+        {
+            return await _bookRepo.GetBookByGenre(GenreId);
+        }
     }
 }

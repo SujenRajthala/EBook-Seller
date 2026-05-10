@@ -36,11 +36,21 @@ namespace EBook_Seller.Controllers
                 return Ok(book);
             
         }
+
         [HttpGet("GetBookById/{id}")]
         public async Task<IActionResult> GetBook(int id)
         {
                 var book = await _service.GetBookById(id);
                 if (book == null) return NotFound($"There is no any Book Name with Id: {id}.");
+                return Ok(book);
+            
+        }
+
+        [HttpGet("GetBookByGenre/{genreId}")]
+        public async Task<IActionResult> GetBookByGenre(int genreId)
+        {
+                var book = await _service.GetBookByGenre(genreId);
+                if (book == null) return NotFound($"There is no any Book with Genre Id: {genreId}.");
                 return Ok(book);
             
         }

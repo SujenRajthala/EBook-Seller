@@ -9,9 +9,10 @@ namespace EBook_Seller.Data.IRepo
         public Task<List<Book>> GetBooks();
         public Task<Book> GetBookByName(string bookName);
         public Task<Book> GetBookById(int id);
+        public Task<List<BookByGenreDTO>> GetBookByGenre(int GenreId);
         public Task AddAsyncBook(Book bookData);
         public Task AddRangeAsyncBook(List<Book> bookListData);
-        public Task<bool> DoesExist(Book newBook);
+        public Task<bool> DuplicateDoesExist(Book newBook);
         public Task<List<Book>> MatchingBooks(List<string> booksName, List<string> booksISBN);
         public Task<Book> IsEditable(int id, AddBookDTO editedData);
     }

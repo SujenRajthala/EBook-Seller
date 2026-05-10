@@ -45,7 +45,7 @@ namespace EBook_Seller.Data.Repo
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> DoesExist(Book newBook)
+        public async Task<bool> DuplicateDoesExist(Book newBook)
         {
             var exist = await _context.Books
                 .AsNoTracking()
@@ -68,5 +68,18 @@ namespace EBook_Seller.Data.Repo
             return exists; 
         }
 
+        public async Task<List<BookByGenreDTO>> GetBookByGenre(int GenreId)
+        {
+            var books = await _context.Books
+                .Where(b => b.BooksGenres.Any(bg => bg.CategoryId == GenreId)).Select(b=>new BookByGenreDTO
+                {
+                    BookName=b.Name,
+                    ISBN=b.ISBN,
+                    Genres=b.BooksGenres.Select(bg=>bg.Genre.Name).ToList(),
+                })
+                .ToListAsync();
+
+            return books;
+        }
     }
 }
