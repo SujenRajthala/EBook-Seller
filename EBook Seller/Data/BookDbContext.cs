@@ -12,6 +12,7 @@ namespace EBook_Seller.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<BookGenre> BooksCategories { get; set; }
+        public DbSet<SellerBook> SellerBooks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -76,6 +77,30 @@ namespace EBook_Seller.Data
                 .WithMany(b => b.BooksGenres)
                 .HasForeignKey(bg => bg.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //SellerBook
+            modelBuilder.Entity<SellerBook>().HasKey(sb => sb.Id);
+            modelBuilder.Entity<SellerBook>()
+                .HasOne(sb => sb.Seller)
+                .WithMany(s => s.SellerBooks)
+                .HasForeignKey(sb => sb.SellerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SellerBook>()
+                .HasOne(sb => sb.Book)
+                .WithMany(b => b.SellerBooks)
+                .HasForeignKey(sb => sb.BookId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SellerBook>()
+                .Property(sb => sb.Price)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<SellerBook>().ToTable(t =>
+            {
+                t.HasCheckConstraint("CK_SellerBook_Price", "[Price]>0");
+                t.HasCheckConstraint("CK_SellerBook_Discount", "[Discount]>=0 AND [Discount]<=100");
+            });
 
         }
     }

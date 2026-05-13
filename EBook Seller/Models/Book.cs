@@ -7,5 +7,6 @@
         public string? Details{ get; set; }
         public string? ISBN { get; set; }
         public List<BookGenre>? BooksGenres { get; set; }
+        public List<SellerBook> SellerBooks { get; set; }
     }
 }

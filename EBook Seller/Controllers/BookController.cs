@@ -55,7 +55,7 @@ namespace EBook_Seller.Controllers
             
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")] 
         [HttpPost("AddBook")]
         public async Task<IActionResult> AddBook(AddBookDTO bookData)
         {

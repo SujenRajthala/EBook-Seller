@@ -10,6 +10,6 @@ namespace EBook_Seller.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public List<UserRole> UserRoles { get; set; }
-
+        public List<SellerBook> SellerBooks { get; set; }
     }
 }
