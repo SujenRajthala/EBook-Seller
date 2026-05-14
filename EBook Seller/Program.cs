@@ -27,6 +27,8 @@ builder.Services.AddScoped<IGenreRepo, GenreRepo>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IGenreRepo, GenreRepo>();
+builder.Services.AddScoped<ISellerBookRepo, SellerBookRepo>();
+builder.Services.AddScoped<ISellerBookService, SellerBookService>();
 
 builder.Services.AddAuthentication(options =>
 {

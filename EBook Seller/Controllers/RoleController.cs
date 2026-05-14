@@ -17,7 +17,7 @@ namespace EBook_Seller.Controllers
         {
             _service = service;
         }
-        [HttpPost]
+        [HttpPost("AddNewRole")]
         public async Task<IActionResult> CreateRole(string Name)
         {
             var role=await _service.AddRoleAsync(Name);
