@@ -9,6 +9,7 @@ namespace EBook_Seller.Services
         public Task<BookResponseDTO> GetBookByName(string bookName);
         public Task<BookResponseDTO> GetBookById(int id);
         public Task<List<BookByGenreDTO>> GetBookByGenre(int GenreId);
+        public Task<ResponseSellerBookDTO> GetBooksForCustomer(string bookName);
         public Task AddAsyncBook(AddBookDTO bookData);
         public Task AddRangeAsyncBook(List<AddBookDTO> bookListData);
         public Task EditBook(int id,AddBookDTO bookEdit);

@@ -10,6 +10,7 @@ namespace EBook_Seller.Data.IRepo
         public Task<Book> GetBookByName(string bookName);
         public Task<Book> GetBookById(int id);
         public Task<List<BookByGenreDTO>> GetBookByGenre(int GenreId);
+        public Task<ResponseSellerBookDTO> GetBooksForCustomer(string bookName);
         public Task AddAsyncBook(Book bookData);
         public Task AddRangeAsyncBook(List<Book> bookListData);
         public Task<bool> DuplicateDoesExist(Book newBook);

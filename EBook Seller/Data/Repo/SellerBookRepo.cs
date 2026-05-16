@@ -1,6 +1,8 @@
 ﻿using EBook_Seller.Data.IRepo;
 using EBook_Seller.Migrations;
 using EBook_Seller.Models;
+using EBook_Seller.Models.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace EBook_Seller.Data.Repo
 {

@@ -54,6 +54,15 @@ namespace EBook_Seller.Controllers
                 return Ok(book);
             
         }
+        [HttpGet("GetBooksForCustomer/{bookName}")]
+        public async Task<IActionResult> GetBooksForCustomer(string bookName)
+        {
+            if (bookName == null) return BadRequest("Enter the Book Name!!");
+            var book = await _service.GetBooksForCustomer(bookName);
+            if (book == null) return NotFound($"There is no any Book Name {bookName}.");
+            return Ok(book);
+
+        }
 
         [Authorize(Roles = "Admin")] 
         [HttpPost("AddBook")]

@@ -21,7 +21,7 @@ namespace EBook_Seller.Services
         public async Task<List<BookResponseDTO>> GetBooks()
         {
             var books = await _bookRepo.GetBooks();
-            var booksResponse = books.Select(b => new BookResponseDTO { Name = b.Name, Detail = b.Details, ISBN = b.ISBN }).ToList();
+            var booksResponse = books.Select(b => new BookResponseDTO {Id=b.Id, Name = b.Name, Detail = b.Details, ISBN = b.ISBN }).ToList();
             return booksResponse;
         }
 
@@ -31,6 +31,7 @@ namespace EBook_Seller.Services
             if (book == null) return null;
             return new BookResponseDTO
             {
+                Id = book.Id,
                 ISBN = book.ISBN,
                 Name = book.Name,
                 Detail = book.Details
@@ -42,6 +43,7 @@ namespace EBook_Seller.Services
             var book = await _bookRepo.GetBookById(id);
             return new BookResponseDTO
             {
+                Id = book.Id,
                 ISBN = book.ISBN,
                 Name = book.Name,
                 Detail = book.Details
@@ -149,6 +151,12 @@ namespace EBook_Seller.Services
         public async Task<List<BookByGenreDTO>> GetBookByGenre(int GenreId)
         {
             return await _bookRepo.GetBookByGenre(GenreId);
+        }
+
+        public async Task<ResponseSellerBookDTO> GetBooksForCustomer(string bookName)
+        {
+            var book = await _bookRepo.GetBooksForCustomer(bookName);
+            return book;
         }
     }
 }

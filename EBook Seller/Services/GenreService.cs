@@ -48,7 +48,7 @@ namespace EBook_Seller.Services
         {
             var genre = await _repo.GetGenreById(id);
             if (genre == null) return null;
-            var cleanedGenre = new GenreResponseDTO { Details = genre.Details, Name = genre.Name };
+            var cleanedGenre = new GenreResponseDTO {Id=genre.Id, Details = genre.Details, Name = genre.Name };
             return cleanedGenre;
         }
 
@@ -58,6 +58,7 @@ namespace EBook_Seller.Services
             var cleanedGenre = listOfGenres
                 .Select(g => new GenreResponseDTO
                 {
+                    Id = g.Id,
                     Name = g.Name,
                     Details = g.Details
                 }).ToList();

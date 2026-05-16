@@ -81,5 +81,32 @@ namespace EBook_Seller.Data.Repo
 
             return books;
         }
+
+        public async Task<ResponseSellerBookDTO> GetBooksForCustomer(string bookName)
+        {   
+            //var books = await _context.Books.Where(b => b.SellerBooks.Any(sb => sb.BookId == bookId)).Select(b => new ResponseSellerBookDTO
+            var book = await _context.Books.Where(b => b.Name == bookName).Select(b => new ResponseSellerBookDTO
+            {
+                Id = b.Id,
+                BookName = b.Name,
+                BookDetails = b.Details,
+                ISBN = b.ISBN,
+                Genres = b.BooksGenres.Select(bg => new GenreResponseDTO
+                {
+                    Id = bg.Genre.Id,
+                    Name = bg.Genre.Name,
+                    Details = bg.Genre.Details,
+                }).ToList(),
+                Sellers = b.SellerBooks.Select(bg => new ResponseSellerDTO
+                {
+                    Id = bg.Seller.Id,
+                    Name = bg.Seller.UserName,
+                    Quantity = bg.Quantity,
+                    Price = bg.Price,
+                    Discount = bg.Discount,
+                }).ToList(),
+            }).FirstOrDefaultAsync();
+            return book;
+        }
     }
 }
